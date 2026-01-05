@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-// Function for CPU move (simple strategy)
 int cpu_move(int stones_left) {
-    // CPU tries to leave a multiple of 7 (winning positions pattern)
+    
     int take = stones_left % 7;
     if (take == 0 || take > 6) {
-        // If can't force multiple of 7, pick random 1-6
+        
         take = rand() % 6 + 1;
         if (take > stones_left) take = stones_left;
     }
