@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Function for CPU move (simple strategy)
+int cpu_move(int stones_left) {
+    // CPU tries to leave a multiple of 7 (winning positions pattern)
+    int take = stones_left % 7;
+    if (take == 0 || take > 6) {
+        // If can't force multiple of 7, pick random 1-6
+        take = rand() % 6 + 1;
+        if (take > stones_left) take = stones_left;
+    }
+    if (take > stones_left) take = stones_left;
+    return take;
+}
+
+int main() {
+    int total;
+    int player_take, cpu_take;
+    
+    srand(time(NULL)); 
+
+    printf("Enter total number of stones: ");
+    scanf("%d", &total);
+
+    int turn = 1;
+
+    while (total > 0) {
+        printf("\nStones left: %d\n", total);
+
+        if (turn == 1) {
+        
+            do {
+                printf("Your turn! Enter stones to take 1–6: ");
+                scanf("%d", &player_take);
+            } while (player_take < 1 || player_take > 6 || player_take > total);
+
+            total -= player_take;
+            printf("You took %d stones.\n", player_take);
+
+            if (total == 0) {
+                printf("You took the last stone. You **win!**\n");
+                break;
+            }
+        } else {
+    
+            cpu_take = cpu_move(total);
+            if (cpu_take < 1) cpu_take = 1;
+            if (cpu_take > total) cpu_take = total;
+
+            total -= cpu_take;
+            printf("CPU takes %d stones.\n", cpu_take);
+
+            if (total == 0) {
+                printf("CPU took the last stone. CPU **wins!**\n");
+                break;
+            }
+        }
+
+        turn = 1 - turn;
+    }
+    return 0;
+}
